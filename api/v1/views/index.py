@@ -21,14 +21,13 @@ def status():
 def get_stats():
     """Retrieve the number of each object"""
     objects = {
-        'amenities': Amenity(),
-        'cities': City(),
-        'places': Place(),
-        'reviews': Review(),
-        'states': State(),
-        'users': User()
+        'amenities': Amenity,
+        'cities': City,
+        'places': Place,
+        'reviews': Review,
+        'states': State,
+        'users': User
     }
     for key, value in objects.items():
         objects[key] = storage.count(value)
     return jsonify(objects)
-

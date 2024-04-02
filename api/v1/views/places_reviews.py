@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-'''Contains the places_reviews views for the API.'''
+'''Contains the reviews views for the API.'''
 from flask import jsonify, request, abort
 from api.v1.views import app_views
 from models import storage
@@ -91,4 +91,3 @@ def update_review(place_id=None, review_id=None):
         review.save()
         return jsonify(review.to_dict()), 200
     abort(404)
-

@@ -1,10 +1,10 @@
 #!/usr/bin/python3
 '''Contains the places views for the API.'''
-from flask import jsonify, request, abort
+from flask import jsonify, request
 from werkzeug.exceptions import NotFound, MethodNotAllowed, BadRequest
 
 from api.v1.views import app_views
-from models import storage
+from models import storage, storage_t
 from models.amenity import Amenity
 from models.city import City
 from models.place import Place
@@ -84,6 +84,7 @@ def add_place(city_id=None, place_id=None):
     data['city_id'] = city_id
     new_place = Place(**data)
     new_place.save()
+    return jsonify(new_place.to_dict()), 201
 
 
 def update_place(city_id=None, place_id=None):
@@ -196,5 +197,3 @@ def find_places():
             del obj['amenities']
         result.append(obj)
     return jsonify(result)
-
-
