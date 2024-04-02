@@ -1,8 +1,3 @@
-#!/usr/bin/python3
-"""
-Contains class BaseModel
-"""
-
 from datetime import datetime
 import models
 from os import getenv
@@ -10,6 +5,7 @@ import sqlalchemy
 from sqlalchemy import Column, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 import uuid
+import hashlib
 
 time = "%Y-%m-%dT%H:%M:%S.%f"
 
@@ -73,3 +69,12 @@ class BaseModel:
     def delete(self):
         """delete the current instance from the storage"""
         models.storage.delete(self)
+
+    def _hash_password(self, password):
+        """Hashes the provided password using MD5"""
+        return hashlib.md5(password.encode()).hexdigest()
+
+    def set_password(self, password):
+        """Sets the password for the user, hashing it before saving"""
+        self.password = self._hash_password(password)
+
