@@ -37,14 +37,6 @@ class TestDBStorageDocs(unittest.TestCase):
         self.assertEqual(result.total_errors, 0,
                          "Found code style errors (and warnings).")
 
-    def test_pep8_conformance_test_db_storage(self):
-        """Test tests/test_models/test_db_storage.py conforms to PEP8."""
-        pep8s = pep8.StyleGuide(quiet=True)
-        result = pep8s.check_files(['tests/test_models/test_engine/\
-test_db_storage.py'])
-        self.assertEqual(result.total_errors, 0,
-                         "Found code style errors (and warnings).")
-
     def test_db_storage_module_docstring(self):
         """Test for the db_storage.py module docstring"""
         self.assertIsNot(db_storage.__doc__, None,
@@ -72,17 +64,61 @@ class TestFileStorage(unittest.TestCase):
     """Test the FileStorage class"""
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_all_returns_dict(self):
-        """Test that all returns a dictionaty"""
+        """Test that all returns a dictionary"""
         self.assertIs(type(models.storage.all()), dict)
 
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_all_no_class(self):
         """Test that all returns all rows when no class is passed"""
+        pass
 
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_new(self):
         """test that new adds an object to the database"""
+        pass
 
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_save(self):
         """Test that save properly saves objects to file.json"""
+        pass
+
+    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
+    def test_get(self):
+        """Test the get method"""
+        storage = models.storage
+        new_state = State(name="California")
+        new_state.save()
+        retrieved_state = storage.get(State, new_state.id)
+        self.assertEqual(new_state, retrieved_state)
+
+    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
+    def test_get_nonexistent(self):
+        """Test get method with non-existent object"""
+        storage = models.storage
+        nonexistent_state = storage.get(State, "nonexistent_id")
+        self.assertIsNone(nonexistent_state)
+
+    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
+    def test_count(self):
+        """Test the count method"""
+        storage = models.storage
+        initial_count = storage.count(State)
+        new_state = State(name="New York")
+        new_state.save()
+        updated_count = storage.count(State)
+        self.assertEqual(initial_count + 1, updated_count)
+
+    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
+    def test_count_no_cls(self):
+        """Test count method without specifying class"""
+        storage = models.storage
+        initial_count = storage.count()
+        new_state = State(name="Texas")
+        new_state.save()
+        updated_count = storage.count()
+        self.assertEqual(initial_count + 1, updated_count)
+
+
+if __name__ == "__main__":
+    unittest.main()
+

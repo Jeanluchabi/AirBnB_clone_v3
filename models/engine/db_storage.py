@@ -69,8 +69,23 @@ class DBStorage:
         Base.metadata.create_all(self.__engine)
         sess_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(sess_factory)
-        self.__session = Session
+        self.__session = Session()
 
     def close(self):
         """call remove() method on the private session attribute"""
         self.__session.remove()
+
+    def get(self, cls, id):
+        """Retrieve one object"""
+        return self.__session.query(cls).filter_by(id=id).first()
+
+    def count(self, cls=None):
+        """Count the number of objects in storage"""
+        if cls:
+            return self.__session.query(cls).count()
+        else:
+            total_count = 0
+            for cls in classes.values():
+                total_count += self.__session.query(cls).count()
+            return total_count
+
