@@ -1,15 +1,17 @@
 #!/usr/bin/python3
-"""
-Package for v1 of API
-"""
-
-# Import Blueprint from Flask
+"""Has Blueprint for the API"""
 from flask import Blueprint
 
-# This creates Blueprint instance
+
 app_views = Blueprint('app_views', __name__, url_prefix='/api/v1')
-
-# Import views to register the routes
-from api.v1 import views
+"""The blueprint for the AirBnB clone API"""
 
 
+from api.v1.views.index import *
+from api.v1.views.states import *
+from api.v1.views.cities import *
+from api.v1.views.amenities import *
+from api.v1.views.users import *
+from api.v1.views.places import *
+from api.v1.views.places_reviews import *
+from api.v1.views.places_amenities import *
